@@ -1,53 +1,19 @@
 import { SideBarLayout, SideBarLayoutProps } from "./SideBarLayout";
-import ListIcon from "@mui/icons-material/List";
-import GridViewIcon from "@mui/icons-material/GridView";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { UiToggleButton, UiToggleButtonGroup } from "~/ui-kit/ToggleButton";
-import React from "react";
 import { SideBarHeader } from "./SideBarHeader";
 import { UiIconButton } from "~/ui-kit/IconButton";
 import { NoteList } from "./NoteList";
 import { DateTime } from "luxon";
 import { Tooltip } from "@mui/material";
-
-type DisplayVariant = "list" | "grid";
+import { DisplayVariantSwitcher } from "./DisplayVariantSwitcher";
 
 export interface SideBarProps extends SideBarLayoutProps {}
 
 export function SideBar(props: SideBarProps) {
-  const [displayVariant, setDisplayVariant] =
-    React.useState<DisplayVariant>("list");
-
-  function displayVariantChangeHandler(
-    _event: React.MouseEvent<HTMLElement>,
-    newDisplayVariant: DisplayVariant | null,
-  ) {
-    if (!newDisplayVariant) return;
-
-    setDisplayVariant(newDisplayVariant);
-  }
-
   return (
     <SideBarLayout {...props}>
       <SideBarHeader>
-        <UiToggleButtonGroup
-          size="small"
-          value={displayVariant}
-          exclusive
-          onChange={displayVariantChangeHandler}
-          aria-label="display variant"
-        >
-          <Tooltip title="List">
-            <UiToggleButton value="list" aria-label="list">
-              <ListIcon />
-            </UiToggleButton>
-          </Tooltip>
-          <Tooltip title="Grid">
-            <UiToggleButton value="grid" aria-label="grid">
-              <GridViewIcon />
-            </UiToggleButton>
-          </Tooltip>
-        </UiToggleButtonGroup>
+        <DisplayVariantSwitcher />
         <Tooltip title="Delete The Note">
           <UiIconButton centerRipple={false}>
             <DeleteOutlineIcon />
