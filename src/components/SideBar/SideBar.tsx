@@ -4,10 +4,11 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { UiToggleButton, UiToggleButtonGroup } from "~/ui-kit/ToggleButton";
 import React from "react";
-import { SideBarLHeader } from "./SideBarHeader";
+import { SideBarHeader } from "./SideBarHeader";
 import { UiIconButton } from "~/ui-kit/IconButton";
 import { NoteList } from "./NoteList";
 import { DateTime } from "luxon";
+import { Tooltip } from "@mui/material";
 
 type DisplayVariant = "list" | "grid";
 
@@ -28,7 +29,7 @@ export function SideBar(props: SideBarProps) {
 
   return (
     <SideBarLayout {...props}>
-      <SideBarLHeader>
+      <SideBarHeader>
         <UiToggleButtonGroup
           size="small"
           value={displayVariant}
@@ -36,17 +37,23 @@ export function SideBar(props: SideBarProps) {
           onChange={displayVariantChangeHandler}
           aria-label="display variant"
         >
-          <UiToggleButton value="list" aria-label="list">
-            <ListIcon />
-          </UiToggleButton>
-          <UiToggleButton value="grid" aria-label="grid">
-            <GridViewIcon />
-          </UiToggleButton>
+          <Tooltip title="List">
+            <UiToggleButton value="list" aria-label="list">
+              <ListIcon />
+            </UiToggleButton>
+          </Tooltip>
+          <Tooltip title="Grid">
+            <UiToggleButton value="grid" aria-label="grid">
+              <GridViewIcon />
+            </UiToggleButton>
+          </Tooltip>
         </UiToggleButtonGroup>
-        <UiIconButton centerRipple={false}>
-          <DeleteOutlineIcon />
-        </UiIconButton>
-      </SideBarLHeader>
+        <Tooltip title="Delete The Note">
+          <UiIconButton centerRipple={false}>
+            <DeleteOutlineIcon />
+          </UiIconButton>
+        </Tooltip>
+      </SideBarHeader>
       <NoteList
         notes={[
           {
@@ -85,7 +92,7 @@ export function SideBar(props: SideBarProps) {
             createdAt: DateTime.now().minus({ days: 10, hours: 1 }),
             addition: "Something",
           },
-          {
+          /*{
             id: "5",
             title: "Test Node 5",
             createdAt: DateTime.now().minus({ days: 32, hours: 5 }),
@@ -110,7 +117,7 @@ export function SideBar(props: SideBarProps) {
             createdAt: DateTime.now().minus({ days: 785, hours: 5 }),
             addition: "Something",
           },
-          {
+           {
             id: "76546",
             title: "Test Node 7",
             createdAt: DateTime.now().minus({ days: 785, hours: 5 }),
@@ -145,7 +152,7 @@ export function SideBar(props: SideBarProps) {
             title: "Test Node 7",
             createdAt: DateTime.now().minus({ days: 785, hours: 5 }),
             addition: "Something",
-          },
+          }, */
         ]}
       />
     </SideBarLayout>

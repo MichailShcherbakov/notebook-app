@@ -57,20 +57,24 @@ function _NoteListItem({
               {title}
             </Typography>
           }
+          secondaryTypographyProps={{
+            component: "span",
+            variant: "body2",
+            color: "text.secondary",
+            noWrap: true,
+          }}
           secondary={
-            <Stack direction="row" alignItems="center" gap={2}>
-              <Typography component="span" variant="body2" color="text.primary">
-                {createdAt}
-              </Typography>
+            <>
               <Typography
                 component="span"
                 variant="body2"
-                color="text.secondary"
-                noWrap
+                color="text.primary"
+                sx={{ marginRight: 2 }}
               >
-                {addition}
+                {createdAt}
               </Typography>
-            </Stack>
+              {addition}
+            </>
           }
         />
       </ListItemButton>

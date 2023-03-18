@@ -7,7 +7,7 @@ export interface MainLayoutContainerProps
 
 export const MainLayoutContainer = styled("div")(() => ({
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   width: "100vw",
   height: "100vh",
   overflow: "auto",

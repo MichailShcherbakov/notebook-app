@@ -6,6 +6,7 @@ export interface SideBarLayoutProps
 export const SideBarLayout = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
+  flexShrink: 0,
   width: 360,
   height: "100%",
   borderRightWidth: 1,
