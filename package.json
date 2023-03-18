@@ -30,6 +30,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "luxon": "^3.3.0",
     "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -37,6 +38,7 @@
     "vite-tsconfig-paths": "^4.0.7"
   },
   "devDependencies": {
+    "@types/luxon": "^3.2.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
