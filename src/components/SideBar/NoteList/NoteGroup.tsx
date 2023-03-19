@@ -6,6 +6,7 @@ import { TODAY_NOTE_GROUP } from "./constants";
 import { NoteId } from "~/store/notes/type";
 import { useNoteActions } from "~/store/notes/hooks";
 import React from "react";
+import { sortNotesByCreationTime } from "./helpers/soryNotesByCreationTime";
 
 export interface NoteGroupProps extends React.HTMLAttributes<HTMLLIElement> {
   group: AbstractNoteGroup;
@@ -28,7 +29,7 @@ function _NoteGroup({ group, ...props }: NoteGroupProps) {
       <ul>
         <NoteListSubHeader>{group.label}</NoteListSubHeader>
         {isTodayNoteGroup && <Divider />}
-        {group.notes.map(note => (
+        {sortNotesByCreationTime(group.notes).map(note => (
           <NoteListItem
             key={note.id}
             id={note.id}
