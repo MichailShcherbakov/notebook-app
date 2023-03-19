@@ -57,6 +57,10 @@ function _NoteListItem({
           "&.Mui-selected": {
             backgroundColor: theme.palette.primary.main,
           },
+
+          "&.Mui-selected:hover": {
+            backgroundColor: theme.palette.primary.main,
+          },
         })}
         onClick={clickHandler}
         selected={isSelected}
