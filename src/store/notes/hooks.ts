@@ -59,7 +59,10 @@ export function useNotes() {
 export function useNoteActions() {
   const { dispatch } = React.useContext(NoteDispatchContext);
 
-  const { putItem } = useStorage<NoteBookSchema>(NOTEBOOK_DB, StoreEnum.NOTES);
+  const { putItem, deleteItem } = useStorage<NoteBookSchema>(
+    NOTEBOOK_DB,
+    StoreEnum.NOTES,
+  );
 
   const setNotes = React.useCallback(
     (notes: RawNote[]) => {
@@ -87,6 +90,16 @@ export function useNoteActions() {
     [dispatch],
   );
 
+  const setCurrentNoteOptions = React.useCallback(
+    (options: CurrentNoteOptions) => {
+      dispatch({
+        type: NoteActionEnum.SET_CURRENT_NOTE_OPTIONS,
+        payload: options,
+      });
+    },
+    [dispatch],
+  );
+
   const updateNote = React.useCallback(
     (note: Note) => {
       dispatch({
@@ -99,19 +112,22 @@ export function useNoteActions() {
     [dispatch, putItem],
   );
 
-  const setCurrentNoteOptions = React.useCallback(
-    (options: CurrentNoteOptions) => {
+  const deleteNote = React.useCallback(
+    (nodeId: NoteId) => {
       dispatch({
-        type: NoteActionEnum.SET_CURRENT_NOTE_OPTIONS,
-        payload: options,
+        type: NoteActionEnum.DELETE_NOTE,
+        payload: nodeId,
       });
+
+      deleteItem(nodeId);
     },
-    [dispatch],
+    [deleteItem, dispatch],
   );
 
   return {
     setNotes,
     updateNote,
+    deleteNote,
     setCurrentNote,
     setCurrentNoteOptions,
   };
