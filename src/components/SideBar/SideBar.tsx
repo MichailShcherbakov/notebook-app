@@ -1,10 +1,9 @@
 import { SideBarLayout, SideBarLayoutProps } from "./SideBarLayout";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { SideBarHeader } from "./SideBarHeader";
-import { UiIconButton } from "~/ui-kit/IconButton";
 import { NoteList } from "./NoteList";
-import { Tooltip } from "@mui/material";
+
 import { DisplayVariantSwitcher } from "./DisplayVariantSwitcher";
+import { CreateNewNoteButton } from "./CrateNewNoteButton/CrateNewNoteButton";
 
 export interface SideBarProps extends SideBarLayoutProps {}
 
@@ -13,11 +12,7 @@ export function SideBar(props: SideBarProps) {
     <SideBarLayout {...props}>
       <SideBarHeader>
         <DisplayVariantSwitcher />
-        <Tooltip title="Delete The Note">
-          <UiIconButton centerRipple={false}>
-            <DeleteOutlineIcon />
-          </UiIconButton>
-        </Tooltip>
+        <CreateNewNoteButton />
       </SideBarHeader>
       <NoteList />
     </SideBarLayout>

@@ -1,6 +1,11 @@
 import { DateTime } from "luxon";
 import { Collection } from "~/tools/collection";
 
+export enum ModeEnum {
+  VIEWER = "VIEWER",
+  EDITOR = "EDITOR",
+}
+
 export const UNTITLED_NOTE = (num = 0) =>
   num > 1 ? `Untitled ${num}` : "Untitled";
 
@@ -25,9 +30,14 @@ export type RawNote = {
 export type NoteId = Note["id"];
 export type NoteCollection = Collection<NoteId, Note>;
 
+export type CurrentNoteOptions = {
+  mode: ModeEnum;
+};
+
 export type NoteState = {
   notes: NoteCollection;
   currentNoteId: NoteId | null;
+  currentNoteOptions: CurrentNoteOptions;
 };
 
 export enum NoteActionEnum {
@@ -36,6 +46,7 @@ export enum NoteActionEnum {
   UPDATE_NOTE = "UPDATE_NOTE",
   DELETE_NOTE = "DELETE_NOTE",
   SET_CURRENT_NOTE = "SET_CURRENT_NOTE",
+  SET_CURRENT_NOTE_OPTIONS = "SET_CURRENT_NOTE_OPTIONS",
 }
 
 export type NoteStateAction =
@@ -57,5 +68,12 @@ export type NoteStateAction =
     }
   | {
       type: NoteActionEnum.SET_CURRENT_NOTE;
-      payload: NoteId;
+      payload: {
+        id: NoteId;
+        options: CurrentNoteOptions;
+      };
+    }
+  | {
+      type: NoteActionEnum.SET_CURRENT_NOTE_OPTIONS;
+      payload: CurrentNoteOptions;
     };

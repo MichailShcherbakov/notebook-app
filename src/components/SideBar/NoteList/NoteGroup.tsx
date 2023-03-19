@@ -14,13 +14,13 @@ export interface NoteGroupProps extends React.HTMLAttributes<HTMLLIElement> {
 function _NoteGroup({ group, ...props }: NoteGroupProps) {
   const isTodayNoteGroup = group.id === TODAY_NOTE_GROUP;
 
-  const { setCurrentNoteId } = useNoteActions();
+  const { setCurrentNote } = useNoteActions();
 
   const openNoteHandler = React.useCallback(
     (nodeId: NoteId) => {
-      setCurrentNoteId(nodeId);
+      setCurrentNote(nodeId);
     },
-    [setCurrentNoteId],
+    [setCurrentNote],
   );
 
   return (

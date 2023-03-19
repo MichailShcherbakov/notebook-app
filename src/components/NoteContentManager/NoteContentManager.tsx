@@ -1,7 +1,5 @@
 import { Stack } from "@mui/material";
-import React from "react";
-import { useCurrentMode, useModeActions } from "~/store/mode/hooks";
-import { ModeEnum } from "~/store/mode/type";
+import { ModeEnum } from "~/store/notes/type";
 import { useNoteActions, useNotes } from "~/store/notes/hooks";
 import { isUntitledNote, UNTITLED_NOTE } from "~/store/notes/type";
 import { TextEditor } from "../TextEditor";
@@ -11,37 +9,32 @@ import { getDocAddition } from "./helpers/getDocAddition";
 import { getDocTitle } from "./helpers/getDocTitle";
 
 export function NoteContentManager() {
-  const { mode } = useCurrentMode();
-  const { setCurrentMode } = useModeActions();
+  const { currentNote, currentNoteOptions, untitledNoteCount } = useNotes();
+  const { updateNote, setCurrentNoteOptions } = useNoteActions();
 
-  const { currentNote, untitledNoteCount } = useNotes();
-  const { updateNote } = useNoteActions();
-
-  const showViewer = mode === ModeEnum.VIEWER;
-  const showEditor = mode === ModeEnum.EDITOR;
+  const showViewer = currentNoteOptions.mode === ModeEnum.VIEWER;
+  const showEditor = currentNoteOptions.mode === ModeEnum.EDITOR;
 
   function editRequestHandler() {
-    setCurrentMode(ModeEnum.EDITOR);
+    setCurrentNoteOptions({
+      mode: ModeEnum.EDITOR,
+    });
   }
 
   function changeTextHandler(text: string) {
     if (!currentNote) return;
 
+    const untitled = isUntitledNote(currentNote.title)
+      ? currentNote.title
+      : UNTITLED_NOTE(untitledNoteCount + 1);
+
     updateNote({
       ...currentNote,
-      title:
-        getDocTitle(text) ??
-        (isUntitledNote(currentNote.title)
-          ? currentNote.title
-          : UNTITLED_NOTE(untitledNoteCount + 1)),
+      title: getDocTitle(text) ?? untitled,
       addition: getDocAddition(text),
       text,
     });
   }
-
-  React.useEffect(() => {
-    setCurrentMode(ModeEnum.VIEWER);
-  }, [currentNote?.id]);
 
   if (!currentNote) return null;
 

@@ -1,14 +1,22 @@
 import React from "react";
-import { fromCollection } from "~/tools/collection";
+import { ModeEnum } from "~/store/notes/type";
 import {
   NoteBookSchema,
   NOTEBOOK_DB,
   StoreEnum,
   useStorage,
 } from "../storage/hooks";
+import { createNewNote } from "./helpers/createNewNote";
+import { getUntitledNoteCount } from "./helpers/getUntitledNoteCount";
 import { NoteDispatchContext } from "./NoteDispatchContext";
 import { NoteStateContext } from "./NoteStateContext";
-import { isUntitledNote, Note, NoteActionEnum, NoteId, RawNote } from "./type";
+import {
+  CurrentNoteOptions,
+  Note,
+  NoteActionEnum,
+  NoteId,
+  RawNote,
+} from "./type";
 
 let isInit = false;
 
@@ -18,16 +26,11 @@ export function useNotes() {
   const { setNotes } = useNoteActions();
 
   const untitledNoteCount = React.useMemo(
-    () =>
-      fromCollection(state.notes).reduce(
-        (untitled, [_, note]) =>
-          isUntitledNote(note.title) ? untitled + 1 : untitled,
-        0,
-      ),
+    () => getUntitledNoteCount(state.notes),
     [state.notes],
   );
 
-  const { getAllItems, addItem } = useStorage<NoteBookSchema>(
+  const { getAllItems } = useStorage<NoteBookSchema>(
     NOTEBOOK_DB,
     StoreEnum.NOTES,
   );
@@ -68,11 +71,17 @@ export function useNoteActions() {
     [dispatch],
   );
 
-  const setCurrentNoteId = React.useCallback(
-    (noteId: NoteId) => {
+  const setCurrentNote = React.useCallback(
+    (noteId: NoteId, options: Partial<CurrentNoteOptions> = {}) => {
       dispatch({
         type: NoteActionEnum.SET_CURRENT_NOTE,
-        payload: noteId,
+        payload: {
+          id: noteId,
+          options: {
+            mode: ModeEnum.VIEWER,
+            ...options,
+          },
+        },
       });
     },
     [dispatch],
@@ -90,9 +99,47 @@ export function useNoteActions() {
     [dispatch, putItem],
   );
 
+  const setCurrentNoteOptions = React.useCallback(
+    (options: CurrentNoteOptions) => {
+      dispatch({
+        type: NoteActionEnum.SET_CURRENT_NOTE_OPTIONS,
+        payload: options,
+      });
+    },
+    [dispatch],
+  );
+
   return {
     setNotes,
     updateNote,
-    setCurrentNoteId,
+    setCurrentNote,
+    setCurrentNoteOptions,
   };
+}
+
+export function useNoteCreate() {
+  const { state } = React.useContext(NoteStateContext);
+  const { dispatch } = React.useContext(NoteDispatchContext);
+
+  const { addItem } = useStorage<NoteBookSchema>(NOTEBOOK_DB, StoreEnum.NOTES);
+
+  const untitledNoteCount = React.useMemo(
+    () => getUntitledNoteCount(state.notes),
+    [state.notes],
+  );
+
+  const createEmptyNote = React.useCallback(() => {
+    const note = createNewNote(untitledNoteCount);
+
+    dispatch({
+      type: NoteActionEnum.CREATE_NOTE,
+      payload: note,
+    });
+
+    addItem({ ...note, createdAt: note.createdAt.toISO() });
+
+    return note;
+  }, [addItem, dispatch, untitledNoteCount]);
+
+  return { createEmptyNote };
 }

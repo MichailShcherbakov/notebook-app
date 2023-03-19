@@ -27,7 +27,13 @@ export function reducer(state: NoteState, action: NoteStateAction): NoteState {
     }
     case NoteActionEnum.SET_CURRENT_NOTE: {
       return produce(state, draft => {
-        draft.currentNoteId = action.payload;
+        draft.currentNoteId = action.payload.id;
+        draft.currentNoteOptions = action.payload.options;
+      });
+    }
+    case NoteActionEnum.SET_CURRENT_NOTE_OPTIONS: {
+      return produce(state, draft => {
+        draft.currentNoteOptions = action.payload;
       });
     }
     case NoteActionEnum.UPDATE_NOTE: {
