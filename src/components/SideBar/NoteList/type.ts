@@ -1,11 +1,4 @@
-import { DateTime } from "luxon";
-
-export type Note = {
-  id: string;
-  title: string;
-  createdAt: DateTime;
-  addition?: string;
-};
+import { Note } from "~/store/notes/type";
 
 export type NoteGroup = {
   id: string;

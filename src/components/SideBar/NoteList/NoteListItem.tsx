@@ -3,24 +3,32 @@ import {
   ListItemButton,
   ListItemProps,
   ListItemText,
-  Stack,
   Typography,
 } from "@mui/material";
 import React from "react";
+
+const NO_ADDITION = "No addition";
 
 export interface NoteListItemProps extends ListItemProps {
   id: string;
   title: string;
   createdAt: string;
-  addition?: string;
+  addition?: string | null;
+  onListItemClick?: (id: string) => void;
 }
 
 function _NoteListItem({
+  id,
   title,
   createdAt,
   addition,
+  onListItemClick,
   ...props
 }: NoteListItemProps) {
+  function clickHandler() {
+    onListItemClick?.(id);
+  }
+
   return (
     <ListItem
       {...props}
@@ -44,6 +52,7 @@ function _NoteListItem({
           overflow: "hidden",
           borderRadius: theme.spacing(0.5),
         })}
+        onClick={clickHandler}
       >
         <ListItemText
           primary={
@@ -73,7 +82,7 @@ function _NoteListItem({
               >
                 {createdAt}
               </Typography>
-              {addition}
+              {addition ?? NO_ADDITION}
             </>
           }
         />
