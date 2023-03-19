@@ -3,16 +3,17 @@ import { NoteListItem } from "./NoteListItem";
 import { NoteListSubHeader } from "./NoteListSubHeader";
 import { NoteGroup as AbstractNoteGroup } from "./type";
 import { TODAY_NOTE_GROUP } from "./constants";
-import { NoteId } from "~/store/notes/type";
+import { Note, NoteId } from "~/store/notes/type";
 import { useNoteActions } from "~/store/notes/hooks";
 import React from "react";
 import { sortNotesByCreationTime } from "./helpers/soryNotesByCreationTime";
 
 export interface NoteGroupProps extends React.HTMLAttributes<HTMLLIElement> {
   group: AbstractNoteGroup;
+  currentNote: Note | null;
 }
 
-function _NoteGroup({ group, ...props }: NoteGroupProps) {
+function _NoteGroup({ group, currentNote, ...props }: NoteGroupProps) {
   const isTodayNoteGroup = group.id === TODAY_NOTE_GROUP;
 
   const { setCurrentNote } = useNoteActions();
@@ -40,6 +41,7 @@ function _NoteGroup({ group, ...props }: NoteGroupProps) {
                 : note.createdAt.toFormat("D")
             }
             addition={note.addition}
+            isSelected={currentNote?.id === note.id}
             onListItemClick={openNoteHandler}
           />
         ))}

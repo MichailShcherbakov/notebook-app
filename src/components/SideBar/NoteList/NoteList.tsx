@@ -8,7 +8,7 @@ import { NoteListLayout, NoteListLayoutProps } from "./NoteListLayout";
 export interface NoteListProps extends NoteListLayoutProps {}
 
 export function NoteList({ ...props }: NoteListProps) {
-  const { notes } = useNotes();
+  const { notes, currentNote } = useNotes();
 
   const noteGroups = React.useMemo(() => computeNoteGroups(notes), [notes]);
 
@@ -16,7 +16,7 @@ export function NoteList({ ...props }: NoteListProps) {
     <NoteListLayout {...props}>
       <List subheader={<li />}>
         {noteGroups.map(group => (
-          <NoteGroup key={group.id} group={group} />
+          <NoteGroup key={group.id} group={group} currentNote={currentNote} />
         ))}
       </List>
     </NoteListLayout>

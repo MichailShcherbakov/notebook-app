@@ -14,6 +14,7 @@ export interface NoteListItemProps extends ListItemProps {
   title: string;
   createdAt: string;
   addition?: string | null;
+  isSelected?: boolean;
   onListItemClick?: (id: string) => void;
 }
 
@@ -22,6 +23,7 @@ function _NoteListItem({
   title,
   createdAt,
   addition,
+  isSelected = false,
   onListItemClick,
   ...props
 }: NoteListItemProps) {
@@ -51,8 +53,13 @@ function _NoteListItem({
           width: "auto",
           overflow: "hidden",
           borderRadius: theme.spacing(0.5),
+
+          "&.Mui-selected": {
+            backgroundColor: theme.palette.primary.main,
+          },
         })}
         onClick={clickHandler}
+        selected={isSelected}
       >
         <ListItemText
           primary={
