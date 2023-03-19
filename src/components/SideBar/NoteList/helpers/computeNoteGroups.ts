@@ -12,9 +12,10 @@ import {
   TOMORROW_NOTE_GROUP,
 } from "../constants";
 import { NoteGroup } from "../type";
+import { sortNotesByCreationTime } from "./soryNotesByCreationTime";
 
 export function computeNoteGroups(noteCollection: NoteCollection): NoteGroup[] {
-  const notes = fromCollection(noteCollection);
+  const notes = sortNotesByCreationTime(fromCollection(noteCollection));
 
   const noteGroups: Collection<NoteGroup["id"], Note[]> =
     createEmptyCollection();
