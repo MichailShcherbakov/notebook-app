@@ -72,7 +72,15 @@ function _NoteCell({
             flexShrink: 0,
           }}
         >
-          <Button size="small" onClick={clickHandler}>
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            onClick={clickHandler}
+            sx={{
+              textTransform: "none",
+            }}
+          >
             Open
           </Button>
         </Stack>

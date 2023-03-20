@@ -35,6 +35,7 @@ function _TextArea({ value, onChange }: TextAreaProps) {
         overflow: "auto",
         fontSize: "1rem",
         outlineStyle: "none",
+        padding: "20px",
       }}
       value={value}
       onChange={changeHandler}

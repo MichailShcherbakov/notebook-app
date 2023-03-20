@@ -1,8 +1,13 @@
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { findNearestText } from "./findNearestText";
+import { gfm } from "micromark-extension-gfm";
+import { gfmFromMarkdown } from "mdast-util-gfm";
 
-export function getDocAddition(markdown: string): string | null {
-  const tree = fromMarkdown(markdown);
+export function getDocAddition(text: string): string | null {
+  const tree = fromMarkdown(text, "utf-8", {
+    extensions: [gfm()],
+    mdastExtensions: [gfmFromMarkdown()],
+  });
 
   if (!tree.position) return null;
 

@@ -1,24 +1,21 @@
-import FontDownloadOutlinedIcon from "@mui/icons-material/FontDownloadOutlined";
-import { UiIconButton } from "~/ui-kit/IconButton";
 import { ToolBarLayout, ToolBarLayoutProps } from "./ToolBarLayout";
-import { Stack, Tooltip } from "@mui/material";
+import { Stack } from "@mui/material";
 import { EditorModeChangeButton } from "./EditorModeChangeButton";
 import { DeleteNoteButton } from "./DeleteNoteButton";
 import { ViewModeSwitcher } from "./ViewModeSwitcher";
 import { CreateNewNoteButton } from "./CreateNewNoteButton";
 import { useNoteState } from "~/store/notes/hooks";
 import { useViewState } from "~/store/view/hooks";
-import { ViewModeEnum } from "~/store/view/type";
+import { EditorModeEnum, ViewModeEnum } from "~/store/view/type";
 import { BackButton } from "./BackButton";
 import { SearchBar } from "./SearchBar";
-
-export const TEXT_FORMAT_TOOLTIP = "Text Format";
+import { TextFormatButton } from "./TextFormatButton";
 
 export interface ToolBarProps extends ToolBarLayoutProps {}
 
 export function ToolBar(props: ToolBarProps) {
   const { currentNote } = useNoteState();
-  const { viewMode } = useViewState();
+  const { viewMode, editorMode } = useViewState();
 
   return (
     <ToolBarLayout {...props}>
@@ -73,11 +70,7 @@ export function ToolBar(props: ToolBarProps) {
               padding: theme.spacing(1.5),
             })}
           >
-            <Tooltip title={TEXT_FORMAT_TOOLTIP}>
-              <UiIconButton centerRipple={false}>
-                <FontDownloadOutlinedIcon />
-              </UiIconButton>
-            </Tooltip>
+            {editorMode === EditorModeEnum.EDIT && <TextFormatButton />}
           </Stack>
         </>
       )}
