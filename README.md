@@ -13,6 +13,8 @@ Notes app wrote on pure react
 
 ## Preview
 
+[Just look it](https://simple-notes-app-dev-task.netlify.app/)
+
 <img alt src="https://github.com/MichailShcherbakov/notebook-app/blob/master/screenshots/main.png?raw=true" />
 
 ## Stack

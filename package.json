@@ -21,7 +21,7 @@
     "lint:check": "eslint \"src/**/*.ts\"",
     "fmt": "prettier . --write",
     "fmt:check": "prettier \"src/**/*.ts\" --check",
-    "check": "yarn fmt && yarn lint",
+    "fmd-lint": "yarn fmt && yarn lint",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },

@@ -4,12 +4,10 @@ import { MainLayout } from "~/layouts/MainLayout";
 import { NoteStateProvider } from "~/store/notes/NoteStateProvider";
 import { ViewStateProvider } from "~/store/view/ViewStateProvider";
 
-const EMPTY: any[] = [];
-
 export default function MainPage() {
   return (
     <MainLayout>
-      <NoteStateProvider notes={EMPTY}>
+      <NoteStateProvider>
         <ViewStateProvider>
           <ToolBar />
           <ViewContentManager />
