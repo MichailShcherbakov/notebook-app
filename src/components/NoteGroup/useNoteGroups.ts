@@ -1,9 +1,9 @@
 import React from "react";
-import { useNotes } from "~/store/notes/hooks";
+import { useNoteState } from "~/store/notes/hooks";
 import { computeNoteGroups } from "./computeNoteGroups";
 
 export function useNoteGroups() {
-  const { notes, ...otherNotes } = useNotes();
+  const { notes, ...otherNotes } = useNoteState();
 
   const noteGroups = React.useMemo(() => computeNoteGroups(notes), [notes]);
 

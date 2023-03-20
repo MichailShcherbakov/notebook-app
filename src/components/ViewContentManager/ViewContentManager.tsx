@@ -1,4 +1,5 @@
 import { Stack, StackProps } from "@mui/material";
+import { useNoteState } from "~/store/notes/hooks";
 import { useViewState } from "~/store/view/hooks";
 import { ViewModeEnum } from "~/store/view/type";
 import { NoteContentManager } from "../NoteContentManager";
@@ -8,7 +9,8 @@ import { SideBar } from "../SideBar";
 export interface ViewContentManagerProps extends StackProps {}
 
 export function ViewContentManager(props: ViewContentManagerProps) {
-  const { mode } = useViewState();
+  const { currentNote } = useNoteState();
+  const { viewMode } = useViewState();
   return (
     <Stack
       {...props}
@@ -17,8 +19,9 @@ export function ViewContentManager(props: ViewContentManagerProps) {
       height="100%"
       overflow="hidden"
     >
-      {mode === ViewModeEnum.GRID && <NoteGrid />}
-      {mode === ViewModeEnum.LIST && (
+      {viewMode === ViewModeEnum.GRID && !currentNote && <NoteGrid />}
+      {viewMode === ViewModeEnum.GRID && currentNote && <NoteContentManager />}
+      {viewMode === ViewModeEnum.LIST && (
         <>
           <SideBar />
           <NoteContentManager />

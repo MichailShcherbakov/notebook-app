@@ -1,11 +1,6 @@
 import { DateTime } from "luxon";
 import { Collection } from "~/tools/collection";
 
-export enum ModeEnum {
-  VIEWER = "VIEWER",
-  EDITOR = "EDITOR",
-}
-
 export const UNTITLED_NOTE = (num = 0) =>
   num > 1 ? `Untitled ${num}` : "Untitled";
 
@@ -30,12 +25,7 @@ export type RawNote = {
 export type NoteId = Note["id"];
 export type NoteCollection = Collection<NoteId, Note>;
 
-export type CurrentNoteOptions = {
-  mode: ModeEnum;
-};
-
 export type NoteState = {
   notes: NoteCollection;
   currentNoteId: NoteId | null;
-  currentNoteOptions: CurrentNoteOptions;
 };

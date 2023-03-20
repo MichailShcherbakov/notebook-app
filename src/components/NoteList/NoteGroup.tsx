@@ -7,6 +7,8 @@ import { Note, NoteId } from "~/store/notes/type";
 import { useNoteActions } from "~/store/notes/hooks";
 import React from "react";
 import { sortNotesByCreationTime } from "../NoteGroup/sortNotesByCreationTime";
+import { useViewStateActions } from "~/store/view/hooks";
+import { EditorModeEnum } from "~/store/view/type";
 
 export interface NoteGroupProps extends React.HTMLAttributes<HTMLLIElement> {
   group: AbstractNoteGroup;
@@ -17,12 +19,14 @@ function _NoteGroup({ group, currentNote, ...props }: NoteGroupProps) {
   const isTodayNoteGroup = group.id === TODAY_NOTE_GROUP;
 
   const { setCurrentNote } = useNoteActions();
+  const { setEditorMode } = useViewStateActions();
 
   const openNoteHandler = React.useCallback(
     (_: React.MouseEvent, nodeId: NoteId) => {
       setCurrentNote(nodeId);
+      setEditorMode(EditorModeEnum.READ);
     },
-    [setCurrentNote],
+    [setCurrentNote, setEditorMode],
   );
 
   return (

@@ -1,23 +1,24 @@
 import { Stack } from "@mui/material";
-import { ModeEnum } from "~/store/notes/type";
-import { useNoteActions, useNotes } from "~/store/notes/hooks";
+import { useNoteActions, useNoteState } from "~/store/notes/hooks";
 import { isUntitledNote, UNTITLED_NOTE } from "~/store/notes/type";
+import { useViewState, useViewStateActions } from "~/store/view/hooks";
+import { EditorModeEnum } from "~/store/view/type";
 import { TextEditor } from "../TextEditor";
 import { TextViewer } from "../TextViewer";
 import { getDocAddition } from "./helpers/getDocAddition";
 import { getDocTitle } from "./helpers/getDocTitle";
 
 export function NoteContentManager() {
-  const { currentNote, currentNoteOptions, untitledNoteCount } = useNotes();
-  const { updateNote, setCurrentNoteOptions } = useNoteActions();
+  const { currentNote, untitledNoteCount } = useNoteState();
+  const { updateNote } = useNoteActions();
+  const { editorMode } = useViewState();
+  const { setEditorMode } = useViewStateActions();
 
-  const showViewer = currentNoteOptions.mode === ModeEnum.VIEWER;
-  const showEditor = currentNoteOptions.mode === ModeEnum.EDITOR;
+  const showViewer = editorMode === EditorModeEnum.READ;
+  const showEditor = editorMode === EditorModeEnum.EDIT;
 
   function editRequestHandler() {
-    setCurrentNoteOptions({
-      mode: ModeEnum.EDITOR,
-    });
+    setEditorMode(EditorModeEnum.EDIT);
   }
 
   function changeTextHandler(text: string) {

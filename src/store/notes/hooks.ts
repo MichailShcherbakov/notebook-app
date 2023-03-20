@@ -1,5 +1,4 @@
 import React from "react";
-import { ModeEnum } from "~/store/notes/type";
 import {
   NoteBookSchema,
   NOTEBOOK_DB,
@@ -10,18 +9,17 @@ import {
   createNoteAction,
   deleteNoteAction,
   setCurrentNoteAction,
-  setCurrentNoteOptionsAction,
   setNotesAction,
   updateNoteAction,
 } from "./actions";
 import { createNewNote } from "./helpers/createNewNote";
 import { getUntitledNoteCount } from "./helpers/getUntitledNoteCount";
 import { useDispatch, useStore } from "./store";
-import { CurrentNoteOptions, Note, NoteId, RawNote } from "./type";
+import { Note, NoteId, RawNote } from "./type";
 
 let isInit = false;
 
-export function useNotes() {
+export function useNoteState() {
   const store = useStore();
 
   const { setNotes } = useNoteActions();
@@ -73,23 +71,8 @@ export function useNoteActions() {
   );
 
   const setCurrentNote = React.useCallback(
-    (noteId: NoteId | null, options: Partial<CurrentNoteOptions> = {}) => {
-      dispatch(
-        setCurrentNoteAction({
-          id: noteId,
-          options: {
-            mode: ModeEnum.VIEWER,
-            ...options,
-          },
-        }),
-      );
-    },
-    [dispatch],
-  );
-
-  const setCurrentNoteOptions = React.useCallback(
-    (options: CurrentNoteOptions) => {
-      dispatch(setCurrentNoteOptionsAction(options));
+    (noteId: NoteId | null) => {
+      dispatch(setCurrentNoteAction(noteId));
     },
     [dispatch],
   );
@@ -117,7 +100,6 @@ export function useNoteActions() {
     updateNote,
     deleteNote,
     setCurrentNote,
-    setCurrentNoteOptions,
   };
 }
 

@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { UiIconButton, UiIconButtonProps } from "~/ui-kit/IconButton";
-import { useNoteActions, useNotes } from "~/store/notes/hooks";
+import { useNoteActions, useNoteState } from "~/store/notes/hooks";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
 
@@ -19,7 +19,7 @@ export function DeleteNoteButton(props: DeleteNoteButtonProps) {
   const [requestedConfirmation, setRequestedConfirmation] =
     React.useState(false);
 
-  const { currentNote } = useNotes();
+  const { currentNote } = useNoteState();
   const { deleteNote } = useNoteActions();
 
   function clickHandler() {

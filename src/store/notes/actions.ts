@@ -1,5 +1,5 @@
 import { createAction } from "~/tools/store/createAction";
-import { CurrentNoteOptions, Note, NoteId, RawNote } from "./type";
+import { Note, NoteId, RawNote } from "./type";
 
 export enum NoteActionEnum {
   SET_NOTES = "SET_NOTES",
@@ -7,18 +7,12 @@ export enum NoteActionEnum {
   UPDATE_NOTE = "UPDATE_NOTE",
   DELETE_NOTE = "DELETE_NOTE",
   SET_CURRENT_NOTE = "SET_CURRENT_NOTE",
-  SET_CURRENT_NOTE_OPTIONS = "SET_CURRENT_NOTE_OPTIONS",
 }
 
 export const setNotesAction = createAction<RawNote[]>(NoteActionEnum.SET_NOTES);
 
-export const setCurrentNoteAction = createAction<{
-  id: NoteId | null;
-  options: CurrentNoteOptions;
-}>(NoteActionEnum.SET_CURRENT_NOTE);
-
-export const setCurrentNoteOptionsAction = createAction<CurrentNoteOptions>(
-  NoteActionEnum.SET_CURRENT_NOTE_OPTIONS,
+export const setCurrentNoteAction = createAction<NoteId | null>(
+  NoteActionEnum.SET_CURRENT_NOTE,
 );
 
 export const createNoteAction = createAction<Note>(NoteActionEnum.CREATE_NOTE);

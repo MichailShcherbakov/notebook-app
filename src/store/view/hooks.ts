@@ -1,7 +1,7 @@
 import React from "react";
-import { setViewModeAction } from "./actions";
+import { setEditorModeAction, setViewModeAction } from "./actions";
 import { useDispatch, useStore } from "./store";
-import { ViewModeEnum } from "./type";
+import { EditorModeEnum, ViewModeEnum } from "./type";
 
 export function useViewState() {
   return useStore();
@@ -17,7 +17,15 @@ export function useViewStateActions() {
     [dispatch],
   );
 
+  const setEditorMode = React.useCallback(
+    (mode: EditorModeEnum) => {
+      dispatch(setEditorModeAction(mode));
+    },
+    [dispatch],
+  );
+
   return {
     setViewMode,
+    setEditorMode,
   };
 }

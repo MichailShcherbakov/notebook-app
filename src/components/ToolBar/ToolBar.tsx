@@ -2,18 +2,22 @@ import FontDownloadOutlinedIcon from "@mui/icons-material/FontDownloadOutlined";
 import { UiIconButton } from "~/ui-kit/IconButton";
 import { ToolBarLayout, ToolBarLayoutProps } from "./ToolBarLayout";
 import { Stack, Tooltip } from "@mui/material";
-import { ModeChangeButton } from "./ModeChangeButton";
+import { EditorModeChangeButton } from "./EditorModeChangeButton";
 import { DeleteNoteButton } from "./DeleteNoteButton";
-import { DisplayVariantSwitcher } from "./DisplayVariantSwitcher";
+import { ViewModeSwitcher } from "./ViewModeSwitcher";
 import { CreateNewNoteButton } from "./CreateNewNoteButton";
-import { useNotes } from "~/store/notes/hooks";
+import { useNoteState } from "~/store/notes/hooks";
+import { useViewState } from "~/store/view/hooks";
+import { ViewModeEnum } from "~/store/view/type";
+import { BackButton } from "./BackButton";
 
 export const TEXT_FORMAT_TOOLTIP = "Text Format";
 
 export interface ToolBarProps extends ToolBarLayoutProps {}
 
 export function ToolBar(props: ToolBarProps) {
-  const { currentNote } = useNotes();
+  const { currentNote } = useNoteState();
+  const { viewMode } = useViewState();
 
   return (
     <ToolBarLayout {...props}>
@@ -32,7 +36,13 @@ export function ToolBar(props: ToolBarProps) {
           borderRightStyle: "solid",
         })}
       >
-        <DisplayVariantSwitcher />
+        <Stack direction="row" alignItems="center" gap={1}>
+          {viewMode === ViewModeEnum.LIST && <ViewModeSwitcher />}
+          {viewMode === ViewModeEnum.GRID && !currentNote && (
+            <ViewModeSwitcher />
+          )}
+          {viewMode === ViewModeEnum.GRID && currentNote && <BackButton />}
+        </Stack>
         <CreateNewNoteButton />
       </Stack>
       {currentNote && (
@@ -48,7 +58,7 @@ export function ToolBar(props: ToolBarProps) {
               padding: theme.spacing(1.5),
             })}
           >
-            <ModeChangeButton />
+            <EditorModeChangeButton />
             <DeleteNoteButton />
           </Stack>
           <Stack

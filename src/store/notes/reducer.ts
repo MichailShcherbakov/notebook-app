@@ -5,7 +5,6 @@ import {
   createNoteAction,
   deleteNoteAction,
   setCurrentNoteAction,
-  setCurrentNoteOptionsAction,
   setNotesAction,
   updateNoteAction,
 } from "./actions";
@@ -24,11 +23,7 @@ export const reducer = createReducer<NoteState>(builder => {
       );
     })
     .addCase(setCurrentNoteAction, (state, action) => {
-      state.currentNoteId = action.payload.id;
-      state.currentNoteOptions = action.payload.options;
-    })
-    .addCase(setCurrentNoteOptionsAction, (state, action) => {
-      state.currentNoteOptions = action.payload;
+      state.currentNoteId = action.payload;
     })
     .addCase(createNoteAction, (state, action) => {
       state.notes.set(action.payload.id, action.payload);
@@ -37,6 +32,10 @@ export const reducer = createReducer<NoteState>(builder => {
       state.notes.set(action.payload.id, action.payload);
     })
     .addCase(deleteNoteAction, (state, action) => {
+      if (state.currentNoteId === action.payload) {
+        state.currentNoteId = null;
+      }
+
       state.notes.delete(action.payload);
     });
 });
