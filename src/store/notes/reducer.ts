@@ -1,58 +1,42 @@
-import produce, { enableMapSet } from "immer";
 import { DateTime } from "luxon";
 import { toCollection } from "~/tools/collection";
+import { createReducer } from "~/tools/store/createReducer";
 import {
-  Note,
-  NoteActionEnum,
-  NoteState,
-  NoteStateAction,
-  RawNote,
-} from "./type";
+  createNoteAction,
+  deleteNoteAction,
+  setCurrentNoteAction,
+  setCurrentNoteOptionsAction,
+  setNotesAction,
+  updateNoteAction,
+} from "./actions";
+import { Note, NoteState, RawNote } from "./type";
 
-enableMapSet();
-
-export function reducer(state: NoteState, action: NoteStateAction): NoteState {
-  switch (action.type) {
-    case NoteActionEnum.SET_NOTES: {
-      return produce(state, draft => {
-        draft.notes = toCollection<RawNote, "id", Note>(
-          action.payload,
-          "id",
-          note => ({
-            ...note,
-            createdAt: DateTime.fromISO(note.createdAt),
-          }),
-        );
-      });
-    }
-    case NoteActionEnum.SET_CURRENT_NOTE: {
-      return produce(state, draft => {
-        draft.currentNoteId = action.payload.id;
-        draft.currentNoteOptions = action.payload.options;
-      });
-    }
-    case NoteActionEnum.SET_CURRENT_NOTE_OPTIONS: {
-      return produce(state, draft => {
-        draft.currentNoteOptions = action.payload;
-      });
-    }
-    case NoteActionEnum.UPDATE_NOTE: {
-      return produce(state, draft => {
-        draft.notes.set(action.payload.id, action.payload);
-      });
-    }
-    case NoteActionEnum.CREATE_NOTE: {
-      return produce(state, draft => {
-        draft.notes.set(action.payload.id, action.payload);
-      });
-    }
-    case NoteActionEnum.DELETE_NOTE: {
-      return produce(state, draft => {
-        draft.notes.delete(action.payload);
-      });
-    }
-    default: {
-      return state;
-    }
-  }
-}
+export const reducer = createReducer<NoteState>(builder => {
+  builder
+    .addCase(setNotesAction, (state, action) => {
+      state.notes = toCollection<RawNote, "id", Note>(
+        action.payload,
+        "id",
+        note => ({
+          ...note,
+          createdAt: DateTime.fromISO(note.createdAt),
+        }),
+      );
+    })
+    .addCase(setCurrentNoteAction, (state, action) => {
+      state.currentNoteId = action.payload.id;
+      state.currentNoteOptions = action.payload.options;
+    })
+    .addCase(setCurrentNoteOptionsAction, (state, action) => {
+      state.currentNoteOptions = action.payload;
+    })
+    .addCase(createNoteAction, (state, action) => {
+      state.notes.set(action.payload.id, action.payload);
+    })
+    .addCase(updateNoteAction, (state, action) => {
+      state.notes.set(action.payload.id, action.payload);
+    })
+    .addCase(deleteNoteAction, (state, action) => {
+      state.notes.delete(action.payload);
+    });
+});

@@ -39,3 +39,41 @@ export type NoteState = {
   currentNoteId: NoteId | null;
   currentNoteOptions: CurrentNoteOptions;
 };
+
+export enum NoteActionEnum {
+  SET_NOTES = "SET_NOTES",
+  CREATE_NOTE = "CREATE_NOTE",
+  UPDATE_NOTE = "UPDATE_NOTE",
+  DELETE_NOTE = "DELETE_NOTE",
+  SET_CURRENT_NOTE = "SET_CURRENT_NOTE",
+  SET_CURRENT_NOTE_OPTIONS = "SET_CURRENT_NOTE_OPTIONS",
+}
+
+export type NoteStateAction =
+  | {
+      type: NoteActionEnum.SET_NOTES;
+      payload: RawNote[];
+    }
+  | {
+      type: NoteActionEnum.CREATE_NOTE;
+      payload: Note;
+    }
+  | {
+      type: NoteActionEnum.UPDATE_NOTE;
+      payload: Note;
+    }
+  | {
+      type: NoteActionEnum.DELETE_NOTE;
+      payload: NoteId;
+    }
+  | {
+      type: NoteActionEnum.SET_CURRENT_NOTE;
+      payload: {
+        id: NoteId | null;
+        options: CurrentNoteOptions;
+      };
+    }
+  | {
+      type: NoteActionEnum.SET_CURRENT_NOTE_OPTIONS;
+      payload: CurrentNoteOptions;
+    };

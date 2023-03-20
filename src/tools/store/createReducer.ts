@@ -1,8 +1,12 @@
-import produce, { Draft } from "immer";
+import produce, { Draft, enableMapSet } from "immer";
 import { Action, PayloadAction } from "./createAction";
 
+enableMapSet();
+
+type PublicReducerBuilder<TState> = Pick<ReducerBuilder<TState>, "addCase">;
+
 type ReducerBuilderInitFn<TState> = (
-  builder: Pick<ReducerBuilder<TState>, "addCase">,
+  builder: PublicReducerBuilder<TState>,
 ) => void;
 
 class ReducerBuilder<TState> {
@@ -11,7 +15,7 @@ class ReducerBuilder<TState> {
   addCase<TType, TPayload>(
     action: Action<TType, TPayload>,
     fn: (state: Draft<TState>, action: PayloadAction<TType, TPayload>) => void,
-  ): ReducerBuilder<TState> {
+  ): PublicReducerBuilder<TState> {
     this.actions.set(
       action.type,
       (state: TState, action: PayloadAction<TType, TPayload>) => {

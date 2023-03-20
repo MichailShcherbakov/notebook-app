@@ -6,29 +6,28 @@ import {
   StoreEnum,
   useStorage,
 } from "../storage/hooks";
-import {
-  createNoteAction,
-  deleteNoteAction,
-  setCurrentNoteAction,
-  setCurrentNoteOptionsAction,
-  setNotesAction,
-  updateNoteAction,
-} from "./actions";
 import { createNewNote } from "./helpers/createNewNote";
 import { getUntitledNoteCount } from "./helpers/getUntitledNoteCount";
-import { useDispatch, useStore } from "./store";
-import { CurrentNoteOptions, Note, NoteId, RawNote } from "./type";
+import { NoteDispatchContext } from "./NoteDispatchContext";
+import { NoteStateContext } from "./NoteStateContext";
+import {
+  CurrentNoteOptions,
+  Note,
+  NoteActionEnum,
+  NoteId,
+  RawNote,
+} from "./type";
 
 let isInit = false;
 
 export function useNotes() {
-  const store = useStore();
+  const { state } = React.useContext(NoteStateContext);
 
   const { setNotes } = useNoteActions();
 
   const untitledNoteCount = React.useMemo(
-    () => getUntitledNoteCount(store.notes),
-    [store.notes],
+    () => getUntitledNoteCount(state.notes),
+    [state.notes],
   );
 
   const { getAllItems } = useStorage<NoteBookSchema>(
@@ -46,19 +45,19 @@ export function useNotes() {
     });
   }, [getAllItems, setNotes]);
 
-  const currentNote = store.currentNoteId
-    ? store.notes.get(store.currentNoteId)!
+  const currentNote = state.currentNoteId
+    ? state.notes.get(state.currentNoteId)!
     : null;
 
   return {
-    ...store,
+    ...state,
     untitledNoteCount,
     currentNote,
   };
 }
 
 export function useNoteActions() {
-  const dispatch = useDispatch();
+  const { dispatch } = React.useContext(NoteDispatchContext);
 
   const { putItem, deleteItem } = useStorage<NoteBookSchema>(
     NOTEBOOK_DB,
@@ -67,36 +66,46 @@ export function useNoteActions() {
 
   const setNotes = React.useCallback(
     (notes: RawNote[]) => {
-      dispatch(setNotesAction(notes));
+      dispatch({
+        type: NoteActionEnum.SET_NOTES,
+        payload: notes,
+      });
     },
     [dispatch],
   );
 
   const setCurrentNote = React.useCallback(
     (noteId: NoteId | null, options: Partial<CurrentNoteOptions> = {}) => {
-      dispatch(
-        setCurrentNoteAction({
+      dispatch({
+        type: NoteActionEnum.SET_CURRENT_NOTE,
+        payload: {
           id: noteId,
           options: {
             mode: ModeEnum.VIEWER,
             ...options,
           },
-        }),
-      );
+        },
+      });
     },
     [dispatch],
   );
 
   const setCurrentNoteOptions = React.useCallback(
     (options: CurrentNoteOptions) => {
-      dispatch(setCurrentNoteOptionsAction(options));
+      dispatch({
+        type: NoteActionEnum.SET_CURRENT_NOTE_OPTIONS,
+        payload: options,
+      });
     },
     [dispatch],
   );
 
   const updateNote = React.useCallback(
     (note: Note) => {
-      dispatch(updateNoteAction(note));
+      dispatch({
+        type: NoteActionEnum.UPDATE_NOTE,
+        payload: note,
+      });
 
       putItem({ ...note, createdAt: note.createdAt.toISO() });
     },
@@ -105,7 +114,10 @@ export function useNoteActions() {
 
   const deleteNote = React.useCallback(
     (nodeId: NoteId) => {
-      dispatch(deleteNoteAction(nodeId));
+      dispatch({
+        type: NoteActionEnum.DELETE_NOTE,
+        payload: nodeId,
+      });
 
       deleteItem(nodeId);
     },
@@ -122,20 +134,23 @@ export function useNoteActions() {
 }
 
 export function useNoteCreate() {
-  const store = useStore();
-  const dispatch = useDispatch();
+  const { state } = React.useContext(NoteStateContext);
+  const { dispatch } = React.useContext(NoteDispatchContext);
 
   const { addItem } = useStorage<NoteBookSchema>(NOTEBOOK_DB, StoreEnum.NOTES);
 
   const untitledNoteCount = React.useMemo(
-    () => getUntitledNoteCount(store.notes),
-    [store.notes],
+    () => getUntitledNoteCount(state.notes),
+    [state.notes],
   );
 
   const createEmptyNote = React.useCallback(() => {
     const note = createNewNote(untitledNoteCount);
 
-    dispatch(createNoteAction(note));
+    dispatch({
+      type: NoteActionEnum.CREATE_NOTE,
+      payload: note,
+    });
 
     addItem({ ...note, createdAt: note.createdAt.toISO() });
 

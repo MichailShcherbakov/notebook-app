@@ -5,11 +5,11 @@ export const theme = responsiveFontSizes(
     palette: {
       primary: {
         main: "#FBE17F",
-        contrastText: "#000000",
+        contrastText: "#3A3A3A",
       },
       secondary: {
         main: "#6A6A6A",
-        contrastText: "#000000",
+        contrastText: "#3A3A3A",
       },
       text: {
         primary: "#3A3A3A",
