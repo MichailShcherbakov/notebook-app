@@ -9,13 +9,13 @@ import React from "react";
 
 const NO_ADDITION = "No addition";
 
-export interface NoteListItemProps extends ListItemProps {
+export interface NoteListItemProps extends Omit<ListItemProps, "onClick"> {
   id: string;
   title: string;
   createdAt: string;
   addition?: string | null;
   isSelected?: boolean;
-  onListItemClick?: (id: string) => void;
+  onClick?: (e: React.MouseEvent, id: string) => void;
 }
 
 function _NoteListItem({
@@ -24,11 +24,11 @@ function _NoteListItem({
   createdAt,
   addition,
   isSelected = false,
-  onListItemClick,
+  onClick,
   ...props
 }: NoteListItemProps) {
-  function clickHandler() {
-    onListItemClick?.(id);
+  function clickHandler(e: React.MouseEvent) {
+    onClick?.(e, id);
   }
 
   return (

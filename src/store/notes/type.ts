@@ -69,7 +69,7 @@ export type NoteStateAction =
   | {
       type: NoteActionEnum.SET_CURRENT_NOTE;
       payload: {
-        id: NoteId;
+        id: NoteId | null;
         options: CurrentNoteOptions;
       };
     }

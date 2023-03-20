@@ -3,7 +3,7 @@ import {
   PREVIOUS_30_DAYS_NOTE_GROUP,
   TODAY_NOTE_GROUP,
   TOMORROW_NOTE_GROUP,
-} from "../constants";
+} from "./constants";
 
 export function getNoteGroupTitleFromDate(
   noteCreationDate: DateTime,

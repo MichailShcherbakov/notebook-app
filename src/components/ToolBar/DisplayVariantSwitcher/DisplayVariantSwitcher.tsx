@@ -7,11 +7,9 @@ import {
 } from "~/ui-kit/ToggleButton";
 import ListIcon from "@mui/icons-material/List";
 import GridViewIcon from "@mui/icons-material/GridView";
-
-enum DisplayVariantEnum {
-  LIST = "LIST",
-  GRID = "GRID",
-}
+import { useViewState, useViewStateActions } from "~/store/view/hooks";
+import { ViewModeEnum } from "~/store/view/type";
+import { useNoteActions } from "~/store/notes/hooks";
 
 export const LIST_TOOLTIP = "List";
 export const GRID_TOOLTIP = "Grid";
@@ -19,16 +17,18 @@ export const GRID_TOOLTIP = "Grid";
 export interface DisplayVariantSwitcherProps extends UiToggleButtonGroupProps {}
 
 export function DisplayVariantSwitcher() {
-  const [displayVariant, setDisplayVariant] =
-    React.useState<DisplayVariantEnum>(DisplayVariantEnum.LIST);
+  const { mode: displayVariant } = useViewState();
+  const { setViewMode } = useViewStateActions();
+  const { setCurrentNote } = useNoteActions();
 
   function displayVariantChangeHandler(
-    _event: React.MouseEvent<HTMLElement>,
-    newDisplayVariant: DisplayVariantEnum | null,
+    _: React.MouseEvent<HTMLElement>,
+    newDisplayVariant: ViewModeEnum | null,
   ) {
     if (!newDisplayVariant) return;
 
-    setDisplayVariant(newDisplayVariant);
+    setViewMode(newDisplayVariant);
+    setCurrentNote(null);
   }
 
   return (
@@ -41,18 +41,18 @@ export function DisplayVariantSwitcher() {
     >
       <Tooltip title={LIST_TOOLTIP}>
         <UiToggleButton
-          value={DisplayVariantEnum.LIST}
-          aria-label={DisplayVariantEnum.LIST}
-          selected={displayVariant === DisplayVariantEnum.LIST}
+          value={ViewModeEnum.LIST}
+          aria-label={ViewModeEnum.LIST}
+          selected={displayVariant === ViewModeEnum.LIST}
         >
           <ListIcon />
         </UiToggleButton>
       </Tooltip>
       <Tooltip title={GRID_TOOLTIP}>
         <UiToggleButton
-          value={DisplayVariantEnum.GRID}
-          aria-label={DisplayVariantEnum.GRID}
-          selected={displayVariant === DisplayVariantEnum.GRID}
+          value={ViewModeEnum.GRID}
+          aria-label={ViewModeEnum.GRID}
+          selected={displayVariant === ViewModeEnum.GRID}
         >
           <GridViewIcon />
         </UiToggleButton>

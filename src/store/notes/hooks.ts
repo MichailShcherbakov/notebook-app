@@ -75,7 +75,7 @@ export function useNoteActions() {
   );
 
   const setCurrentNote = React.useCallback(
-    (noteId: NoteId, options: Partial<CurrentNoteOptions> = {}) => {
+    (noteId: NoteId | null, options: Partial<CurrentNoteOptions> = {}) => {
       dispatch({
         type: NoteActionEnum.SET_CURRENT_NOTE,
         payload: {

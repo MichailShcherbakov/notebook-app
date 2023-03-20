@@ -6,7 +6,7 @@ import {
   fromCollection,
   insertToCollection,
 } from "~/tools/collection";
-import { NoteGroup } from "../type";
+import { NoteGroup } from "./type";
 import { getNoteGroupTitleFromDate } from "./getNoteGroupTitleFromDate";
 import { sortNotesByCreationTime } from "./sortNotesByCreationTime";
 

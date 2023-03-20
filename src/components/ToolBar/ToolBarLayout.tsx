@@ -8,10 +8,9 @@ export const ToolBarLayout = styled("div")(({ theme }) => ({
   flexDirection: "row",
   flexShrink: 0,
   alignItems: "center",
-  justifyContent: "space-between",
   width: "100%",
+  overflow: "hidden",
   height: theme.spacing(8.75),
-  padding: theme.spacing(1.5),
   boxShadow: `0px 0px 1px 1px ${theme.palette.divider}`,
   zIndex: theme.zIndex.appBar,
 }));

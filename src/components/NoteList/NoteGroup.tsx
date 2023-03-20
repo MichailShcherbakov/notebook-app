@@ -1,12 +1,12 @@
-import { Divider } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import { NoteListItem } from "./NoteListItem";
 import { NoteListSubHeader } from "./NoteListSubHeader";
-import { NoteGroup as AbstractNoteGroup } from "./type";
-import { TODAY_NOTE_GROUP } from "./constants";
+import { NoteGroup as AbstractNoteGroup } from "../NoteGroup/type";
+import { TODAY_NOTE_GROUP } from "../NoteGroup/constants";
 import { Note, NoteId } from "~/store/notes/type";
 import { useNoteActions } from "~/store/notes/hooks";
 import React from "react";
-import { sortNotesByCreationTime } from "./helpers/soryNotesByCreationTime";
+import { sortNotesByCreationTime } from "../NoteGroup/sortNotesByCreationTime";
 
 export interface NoteGroupProps extends React.HTMLAttributes<HTMLLIElement> {
   group: AbstractNoteGroup;
@@ -19,7 +19,7 @@ function _NoteGroup({ group, currentNote, ...props }: NoteGroupProps) {
   const { setCurrentNote } = useNoteActions();
 
   const openNoteHandler = React.useCallback(
-    (nodeId: NoteId) => {
+    (_: React.MouseEvent, nodeId: NoteId) => {
       setCurrentNote(nodeId);
     },
     [setCurrentNote],
@@ -28,7 +28,17 @@ function _NoteGroup({ group, currentNote, ...props }: NoteGroupProps) {
   return (
     <li {...props} key={group.id}>
       <ul>
-        <NoteListSubHeader>{group.label}</NoteListSubHeader>
+        <NoteListSubHeader>
+          <Typography
+            sx={{ display: "block" }}
+            component="h2"
+            variant="body1"
+            color="text.primary"
+            noWrap
+          >
+            {group.label}
+          </Typography>
+        </NoteListSubHeader>
         {isTodayNoteGroup && <Divider />}
         {sortNotesByCreationTime(group.notes).map(note => (
           <NoteListItem
@@ -42,7 +52,7 @@ function _NoteGroup({ group, currentNote, ...props }: NoteGroupProps) {
             }
             addition={note.addition}
             isSelected={currentNote?.id === note.id}
-            onListItemClick={openNoteHandler}
+            onClick={openNoteHandler}
           />
         ))}
       </ul>

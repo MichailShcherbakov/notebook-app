@@ -4,7 +4,6 @@ import { useNoteActions, useNotes } from "~/store/notes/hooks";
 import { isUntitledNote, UNTITLED_NOTE } from "~/store/notes/type";
 import { TextEditor } from "../TextEditor";
 import { TextViewer } from "../TextViewer";
-import { ToolBar } from "../ToolBar";
 import { getDocAddition } from "./helpers/getDocAddition";
 import { getDocTitle } from "./helpers/getDocTitle";
 
@@ -47,7 +46,6 @@ export function NoteContentManager() {
         overflow: "auto",
       }}
     >
-      <ToolBar />
       {showViewer && (
         <TextViewer onEditRequire={editRequestHandler}>
           {currentNote.text}

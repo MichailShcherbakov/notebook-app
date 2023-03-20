@@ -16,6 +16,10 @@ export const theme = responsiveFontSizes(
       },
     },
     typography: {
+      h5: {
+        fontSize: "1.5rem",
+        fontWeight: 500,
+      },
       h6: {
         fontSize: "1rem",
         fontWeight: 600,
