@@ -5,7 +5,7 @@ import { useNoteActions } from "~/store/notes/hooks";
 import { useViewStateActions } from "~/store/view/hooks";
 import { EditorModeEnum } from "~/store/view/type";
 
-const BACK_TO_ALL_TOOLTIP = "Back to all";
+const BACK_TO_ALL_TOOLTIP = "Back To All";
 
 export interface BackButtonProps {}
 

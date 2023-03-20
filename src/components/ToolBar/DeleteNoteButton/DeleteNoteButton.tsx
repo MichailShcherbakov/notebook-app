@@ -11,7 +11,7 @@ import { useNoteActions, useNoteState } from "~/store/notes/hooks";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
 
-export const DELETE_NOTE_TOOLTIP = "Delete the note";
+export const DELETE_NOTE_TOOLTIP = "Delete The Note";
 
 export interface DeleteNoteButtonProps extends UiIconButtonProps {}
 

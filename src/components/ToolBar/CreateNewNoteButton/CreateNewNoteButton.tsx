@@ -5,7 +5,7 @@ import { useNoteActions, useNoteCreate } from "~/store/notes/hooks";
 import { useViewStateActions } from "~/store/view/hooks";
 import { EditorModeEnum } from "~/store/view/type";
 
-const CREATE_NEW_NOTE_TOOLTIP = "Create new note";
+const CREATE_NEW_NOTE_TOOLTIP = "Create New Note";
 
 export interface CreateNewNoteButtonProps extends UiIconButtonProps {}
 

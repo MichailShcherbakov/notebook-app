@@ -81,21 +81,19 @@ export function ToolBar(props: ToolBarProps) {
           </Stack>
         </>
       )}
-      {!currentNote && (
-        <Stack
-          direction="row"
-          gap={1}
-          sx={theme => ({
-            width: "100%",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "right",
-            padding: theme.spacing(1.5),
-          })}
-        >
-          <SearchBar />
-        </Stack>
-      )}
+      <Stack
+        direction="row"
+        gap={1}
+        sx={theme => ({
+          width: "100%",
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "right",
+          padding: theme.spacing(1.5),
+        })}
+      >
+        {(viewMode !== ViewModeEnum.GRID || !currentNote) && <SearchBar />}
+      </Stack>
     </ToolBarLayout>
   );
 }
