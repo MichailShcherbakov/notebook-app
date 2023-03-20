@@ -19,12 +19,8 @@ import { getUntitledNoteCount } from "./helpers/getUntitledNoteCount";
 import { useDispatch, useStore } from "./store";
 import { Note, NoteId, RawNote } from "./type";
 
-let isInit = false;
-
 export function useNoteState() {
   const store = useStore();
-
-  const { setNotes } = useNoteActions();
 
   const untitledNoteCount = React.useMemo(
     () => getUntitledNoteCount(store.notes),
@@ -36,21 +32,6 @@ export function useNoteState() {
       store.filterBy ? filterBy(store.notes, store.filterBy) : store.notes,
     [store.filterBy, store.notes],
   );
-
-  const { getAllItems } = useStorage<NoteBookSchema>(
-    NOTEBOOK_DB,
-    StoreEnum.NOTES,
-  );
-
-  React.useEffect(() => {
-    if (isInit) return;
-
-    isInit = true;
-
-    getAllItems().then(notes => {
-      setNotes(notes);
-    });
-  }, [getAllItems, setNotes]);
 
   const currentNote = store.currentNoteId
     ? store.notes.get(store.currentNoteId)!
@@ -121,15 +102,11 @@ export function useNoteActions() {
 }
 
 export function useNoteCreate() {
-  const store = useStore();
   const dispatch = useDispatch();
 
-  const { addItem } = useStorage<NoteBookSchema>(NOTEBOOK_DB, StoreEnum.NOTES);
+  const { untitledNoteCount } = useNoteState();
 
-  const untitledNoteCount = React.useMemo(
-    () => getUntitledNoteCount(store.notes),
-    [store.notes],
-  );
+  const { addItem } = useStorage<NoteBookSchema>(NOTEBOOK_DB, StoreEnum.NOTES);
 
   const createEmptyNote = React.useCallback(() => {
     const note = createNewNote(untitledNoteCount);
