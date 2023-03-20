@@ -1,7 +1,6 @@
 import React from "react";
 import { useRemark } from "react-remark";
 import { TextViewerLayout, TextViewerLayoutProps } from "./TextViewerLayout";
-import { fromMarkdown } from "mdast-util-from-markdown";
 
 export interface TextViewerProps extends TextViewerLayoutProps {
   children: string;
@@ -11,6 +10,7 @@ export interface TextViewerProps extends TextViewerLayoutProps {
 export function TextViewer({
   children,
   onEditRequire,
+  onClick,
   ...props
 }: TextViewerProps) {
   const [markdownSource, setMarkdownSource] = useRemark();
@@ -19,9 +19,9 @@ export function TextViewer({
     setMarkdownSource(children);
   }, [children, setMarkdownSource]);
 
-  function clickHandler() {
-    // TODO: don't forget about the native 'onClick' event
-    // onEditRequire?.();
+  function clickHandler(e: React.MouseEvent<HTMLDivElement>) {
+    onEditRequire?.();
+    onClick?.(e);
   }
 
   return (

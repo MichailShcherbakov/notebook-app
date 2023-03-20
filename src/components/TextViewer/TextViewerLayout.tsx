@@ -8,4 +8,5 @@ export const TextViewerLayout = styled("div")(({ theme }) => ({
   height: "100%",
   overflow: "auto",
   padding: theme.spacing(2.5),
+  cursor: "text",
 }));

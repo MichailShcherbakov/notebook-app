@@ -1,8 +1,10 @@
 import { Stack } from "@mui/material";
+import React from "react";
 import { useNoteActions, useNoteState } from "~/store/notes/hooks";
 import { isUntitledNote, UNTITLED_NOTE } from "~/store/notes/type";
 import { useViewState, useViewStateActions } from "~/store/view/hooks";
 import { EditorModeEnum } from "~/store/view/type";
+import { useDelayedChangeEvent } from "~/tools/useDelayedChangeEvent";
 import { TextEditor } from "../TextEditor";
 import { TextViewer } from "../TextViewer";
 import { getDocAddition } from "./helpers/getDocAddition";
@@ -14,26 +16,33 @@ export function NoteContentManager() {
   const { editorMode } = useViewState();
   const { setEditorMode } = useViewStateActions();
 
+  const [value, onChange, setValue] = useDelayedChangeEvent(
+    (e: React.ChangeEvent<HTMLTextAreaElement>, text: string) => {
+      if (!currentNote) return;
+
+      const untitled = isUntitledNote(currentNote.title)
+        ? currentNote.title
+        : UNTITLED_NOTE(untitledNoteCount + 1);
+
+      updateNote({
+        ...currentNote,
+        title: getDocTitle(text) ?? untitled,
+        addition: getDocAddition(text),
+        text,
+      });
+    },
+    currentNote?.text ?? "",
+  );
+
+  React.useEffect(() => {
+    setValue(currentNote?.text ?? "");
+  }, [currentNote, setValue]);
+
   const showViewer = editorMode === EditorModeEnum.READ;
   const showEditor = editorMode === EditorModeEnum.EDIT;
 
   function editRequestHandler() {
     setEditorMode(EditorModeEnum.EDIT);
-  }
-
-  function changeTextHandler(text: string) {
-    if (!currentNote) return;
-
-    const untitled = isUntitledNote(currentNote.title)
-      ? currentNote.title
-      : UNTITLED_NOTE(untitledNoteCount + 1);
-
-    updateNote({
-      ...currentNote,
-      title: getDocTitle(text) ?? untitled,
-      addition: getDocAddition(text),
-      text,
-    });
   }
 
   if (!currentNote) return null;
@@ -52,9 +61,7 @@ export function NoteContentManager() {
           {currentNote.text}
         </TextViewer>
       )}
-      {showEditor && (
-        <TextEditor value={currentNote.text} onChange={changeTextHandler} />
-      )}
+      {showEditor && <TextEditor value={value} onChange={onChange} />}
     </Stack>
   );
 }

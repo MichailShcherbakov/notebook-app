@@ -3,16 +3,29 @@ import React from "react";
 
 export interface TextAreaProps extends Omit<TextareaAutosizeProps, "onChange"> {
   value: string;
-  onChange: (text: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>, text: string) => void;
 }
 
 function _TextArea({ value, onChange }: TextAreaProps) {
-  function changeHandler(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    onChange?.(event.target.value);
+  function changeHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    onChange?.(e, e.target.value);
   }
+
+  const ref = React.useRef<HTMLTextAreaElement | null>(null);
+
+  React.useEffect(() => {
+    ref.current?.focus();
+
+    // set focus at the end
+    ref.current?.setSelectionRange(
+      ref.current!.value.length,
+      ref.current!.value.length,
+    );
+  }, []);
 
   return (
     <TextareaAutosize
+      ref={ref}
       style={{
         width: "100%",
         height: "100%",
@@ -21,8 +34,6 @@ function _TextArea({ value, onChange }: TextAreaProps) {
         fontFamily: "Roboto",
         overflow: "auto",
         fontSize: "1rem",
-
-        // TODO: remove
         outlineStyle: "none",
       }}
       value={value}

@@ -4,7 +4,7 @@ import { TextEditorLayout, TextEditorLayoutProps } from "./TextEditorLayout";
 export interface TextEditorProps
   extends Omit<TextEditorLayoutProps, "onChange"> {
   value: string;
-  onChange: (text: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>, text: string) => void;
 }
 
 export function TextEditor({ value, onChange, ...props }: TextEditorProps) {

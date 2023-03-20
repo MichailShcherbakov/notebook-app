@@ -1,9 +1,8 @@
 import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
 import { useNoteActions, useNoteState } from "~/store/notes/hooks";
 import { useViewStateActions } from "~/store/view/hooks";
 import { EditorModeEnum } from "~/store/view/type";
-import { useEventDelay } from "~/tools/useEventDelay";
+import { useDelayedChangeEvent } from "~/tools/useDelayedChangeEvent";
 import { SearchIconWrapper } from "./SearchIconWrapper";
 import { SearchInputBase } from "./SearchInputBase";
 import { SearchLayout, SearchLayoutProps } from "./SearchLayout";
@@ -15,19 +14,11 @@ export function SearchBar(props: SearchBarProps) {
   const { setEditorMode } = useViewStateActions();
   const { filterBy } = useNoteState();
 
-  const [input, setInput] = React.useState(filterBy ?? "");
-
-  const emit = useEventDelay((filter: string) => {
-    setNoteFilter(filter);
+  const [value, onChange] = useDelayedChangeEvent<HTMLInputElement>(e => {
+    setNoteFilter(e.target.value);
     setCurrentNote(null);
     setEditorMode(EditorModeEnum.READ);
-  });
-
-  function changeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    emit(e.target.value);
-
-    setInput(e.target.value);
-  }
+  }, filterBy ?? "");
 
   return (
     <SearchLayout {...props}>
@@ -36,8 +27,8 @@ export function SearchBar(props: SearchBarProps) {
       </SearchIconWrapper>
       <SearchInputBase
         placeholder="Search…"
-        value={input}
-        onChange={changeHandler}
+        value={value}
+        onChange={onChange}
       />
     </SearchLayout>
   );
