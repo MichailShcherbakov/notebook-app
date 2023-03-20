@@ -7,12 +7,17 @@ export enum NoteActionEnum {
   UPDATE_NOTE = "UPDATE_NOTE",
   DELETE_NOTE = "DELETE_NOTE",
   SET_CURRENT_NOTE = "SET_CURRENT_NOTE",
+  SET_NOTE_FILTER = "SET_NOTE_FILTER",
 }
 
 export const setNotesAction = createAction<RawNote[]>(NoteActionEnum.SET_NOTES);
 
 export const setCurrentNoteAction = createAction<NoteId | null>(
   NoteActionEnum.SET_CURRENT_NOTE,
+);
+
+export const setNoteFilterAction = createAction<string | null>(
+  NoteActionEnum.SET_NOTE_FILTER,
 );
 
 export const createNoteAction = createAction<Note>(NoteActionEnum.CREATE_NOTE);

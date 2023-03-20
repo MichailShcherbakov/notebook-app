@@ -7,6 +7,12 @@ export function createEmptyCollection<TKey, TValue>(): Collection<
   return new Map();
 }
 
+export function createCollectionFrom<TKey, TValue>(
+  from: [TKey, TValue][],
+): Collection<TKey, TValue> {
+  return new Map(from);
+}
+
 export function toCollection<
   TType,
   TKey extends keyof TType,

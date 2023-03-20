@@ -23,7 +23,16 @@ function _NoteGroup({ group, ...props }: NoteGroupProps) {
   );
 
   return (
-    <Grid {...props} container item xs={12} spacing={2}>
+    <Grid
+      {...props}
+      container
+      item
+      xs={12}
+      spacing={2}
+      sx={{
+        height: "min-content",
+      }}
+    >
       <Grid {...props} container item xs={12}>
         <Typography
           sx={{ display: "block" }}

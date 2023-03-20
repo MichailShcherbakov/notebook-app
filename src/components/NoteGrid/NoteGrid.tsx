@@ -17,8 +17,7 @@ export function NoteGrid(props: NoteGridProps) {
       spacing={2}
       p={2}
       sx={{
-        height: "100%",
-        overflow: "auto",
+        height: "min-content",
       }}
     >
       {noteGroups.map(group => (

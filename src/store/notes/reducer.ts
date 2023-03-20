@@ -5,6 +5,7 @@ import {
   createNoteAction,
   deleteNoteAction,
   setCurrentNoteAction,
+  setNoteFilterAction,
   setNotesAction,
   updateNoteAction,
 } from "./actions";
@@ -37,5 +38,8 @@ export const reducer = createReducer<NoteState>(builder => {
       }
 
       state.notes.delete(action.payload);
+    })
+    .addCase(setNoteFilterAction, (state, action) => {
+      state.filterBy = action.payload;
     });
 });

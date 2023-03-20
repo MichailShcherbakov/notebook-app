@@ -28,5 +28,6 @@ export type NoteCollection = Collection<NoteId, Note>;
 
 export type NoteState = {
   notes: NoteCollection;
+  filterBy: string | null;
   currentNoteId: NoteId | null;
 };

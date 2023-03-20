@@ -9,10 +9,12 @@ import {
   createNoteAction,
   deleteNoteAction,
   setCurrentNoteAction,
+  setNoteFilterAction,
   setNotesAction,
   updateNoteAction,
 } from "./actions";
 import { createNewNote } from "./helpers/createNewNote";
+import { filterBy } from "./helpers/filterBy";
 import { getUntitledNoteCount } from "./helpers/getUntitledNoteCount";
 import { useDispatch, useStore } from "./store";
 import { Note, NoteId, RawNote } from "./type";
@@ -27,6 +29,12 @@ export function useNoteState() {
   const untitledNoteCount = React.useMemo(
     () => getUntitledNoteCount(store.notes),
     [store.notes],
+  );
+
+  const filteredNotes = React.useMemo(
+    () =>
+      store.filterBy ? filterBy(store.notes, store.filterBy) : store.notes,
+    [store.filterBy, store.notes],
   );
 
   const { getAllItems } = useStorage<NoteBookSchema>(
@@ -52,6 +60,7 @@ export function useNoteState() {
     ...store,
     untitledNoteCount,
     currentNote,
+    filteredNotes,
   };
 }
 
@@ -95,11 +104,19 @@ export function useNoteActions() {
     [deleteItem, dispatch],
   );
 
+  const setNoteFilter = React.useCallback(
+    (filter: string) => {
+      dispatch(setNoteFilterAction(filter));
+    },
+    [dispatch],
+  );
+
   return {
     setNotes,
     updateNote,
     deleteNote,
     setCurrentNote,
+    setNoteFilter,
   };
 }
 

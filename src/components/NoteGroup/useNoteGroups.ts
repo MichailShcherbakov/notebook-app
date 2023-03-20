@@ -3,9 +3,12 @@ import { useNoteState } from "~/store/notes/hooks";
 import { computeNoteGroups } from "./computeNoteGroups";
 
 export function useNoteGroups() {
-  const { notes, ...otherNotes } = useNoteState();
+  const { filteredNotes, ...otherNotes } = useNoteState();
 
-  const noteGroups = React.useMemo(() => computeNoteGroups(notes), [notes]);
+  const noteGroups = React.useMemo(
+    () => computeNoteGroups(filteredNotes),
+    [filteredNotes],
+  );
 
   const isEmpty = !noteGroups.length;
 

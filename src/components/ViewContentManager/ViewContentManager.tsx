@@ -17,7 +17,7 @@ export function ViewContentManager(props: ViewContentManagerProps) {
       direction="row"
       width="100%"
       height="100%"
-      overflow="hidden"
+      overflow="auto"
     >
       {viewMode === ViewModeEnum.GRID && !currentNote && <NoteGrid />}
       {viewMode === ViewModeEnum.GRID && currentNote && <NoteContentManager />}

@@ -6,5 +6,6 @@ import { NoteState } from "./type";
 export const { useStore, useDispatch, useStoreContext, StoreProvider } =
   createStore<NoteState>(reducer, () => ({
     notes: createEmptyCollection(),
+    filterBy: null,
     currentNoteId: null,
   }));

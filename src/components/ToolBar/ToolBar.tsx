@@ -10,6 +10,7 @@ import { useNoteState } from "~/store/notes/hooks";
 import { useViewState } from "~/store/view/hooks";
 import { ViewModeEnum } from "~/store/view/type";
 import { BackButton } from "./BackButton";
+import { SearchBar } from "./SearchBar";
 
 export const TEXT_FORMAT_TOOLTIP = "Text Format";
 
@@ -78,18 +79,22 @@ export function ToolBar(props: ToolBarProps) {
               </UiIconButton>
             </Tooltip>
           </Stack>
-          <Stack
-            direction="row"
-            gap={1}
-            sx={theme => ({
-              width: "100%",
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "right",
-              padding: theme.spacing(1.5),
-            })}
-          ></Stack>
         </>
+      )}
+      {!currentNote && (
+        <Stack
+          direction="row"
+          gap={1}
+          sx={theme => ({
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "right",
+            padding: theme.spacing(1.5),
+          })}
+        >
+          <SearchBar />
+        </Stack>
       )}
     </ToolBarLayout>
   );
