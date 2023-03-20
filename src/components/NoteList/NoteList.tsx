@@ -11,7 +11,15 @@ export function NoteList(props: NoteListProps) {
   if (isEmpty) return <EmptyListStub />;
 
   return (
-    <List {...props} subheader={<li />}>
+    <List
+      {...props}
+      subheader={<li />}
+      sx={{
+        width: "100%",
+        height: "100%",
+        overflow: "auto",
+      }}
+    >
       {noteGroups.map(group => (
         <NoteGroup key={group.id} group={group} currentNote={currentNote} />
       ))}
