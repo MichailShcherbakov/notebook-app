@@ -4,7 +4,8 @@ import { Collection } from "~/tools/collection";
 export const UNTITLED_NOTE = (num = 0) =>
   num > 1 ? `Untitled ${num}` : "Untitled";
 
-export const isUntitledNote = (title: string) => title.match("Untitled");
+export const isUntitledNote = (title: string) =>
+  /^Untitled? ?([0-9]*)$/.test(title);
 
 export type Note = {
   id: string;
